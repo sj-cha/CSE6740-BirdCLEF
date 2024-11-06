@@ -1,0 +1,24 @@
+[tool.poetry]
+name = "cse6740-birdclef"
+version = "0.1.0"
+description = ""
+authors = ["giantStaps <ruweima86@gmail.com>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.11"
+keras = "^3.6.0"
+numpy = "*"
+pandas = "*"
+
+[tool.poetry.group.dev.dependencies]
+jupyter = "^1.1.1"
+ipykernel = "^6.29.5"
+librosa = "^0.10.2.post1"
+matplotlib = "^3.9.2"
+tqdm = "^4.67.0"
+tensorflow = "^2.18.0"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
