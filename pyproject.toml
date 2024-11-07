@@ -1,23 +1,22 @@
 [tool.poetry]
 name = "cse6740-birdclef"
 version = "0.1.0"
-description = ""
+description = "GPU enabled birdclef envrionment"
 authors = ["giantStaps <ruweima86@gmail.com>"]
 readme = "README.md"
 
 [tool.poetry.dependencies]
-python = "^3.11"
+python = ">=3.11,<3.12"
 keras = "^3.6.0"
+ipykernel = "*"
 numpy = "*"
+scikit-learn = "*"
 pandas = "*"
-
-[tool.poetry.group.dev.dependencies]
-jupyter = "^1.1.1"
-ipykernel = "^6.29.5"
-librosa = "^0.10.2.post1"
 matplotlib = "^3.9.2"
 tqdm = "^4.67.0"
-tensorflow = "^2.18.0"
+librosa = "^0.10.2.post1"
+tensorflow-hub = "^0.16.1"
+tensorflow = ">=2.18"
 
 [build-system]
 requires = ["poetry-core"]
