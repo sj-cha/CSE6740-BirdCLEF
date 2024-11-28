@@ -1,0 +1,57 @@
+# Ignore all CSV files
+*.csv
+
+# Ignore all NPY files
+*.npy
+
+# Ignore the entire data folder
+data/
+code/bird_sounds_classification/
+model/
+
+
+# Ignore Python cache and virtual environments
+__pycache__/
+*.py[cod]
+*.pyo
+
+# Ignore system files
+.DS_Store
+Thumbs.db
+
+# Ignore logs
+*.log
+*.out
+*.err
+
+# Ignore virtual environment
+venv/
+env/
+
+# Ignore dataset or sound files if applicable
+data/
+*.ogg
+*.mp3
+*.csv
+
+# Ignore model checkpoints and training artifacts
+checkpoints/
+*.ckpt
+*.h5
+*.pt
+*.pth
+*.onnx
+*.joblib
+*.sav
+
+# Ignore TensorBoard and other experiment tracking logs
+logs/
+events.out.tfevents.*
+
+# Ignore Jupyter Notebook checkpoints
+.ipynb_checkpoints/
+
+# Ignore large cache files (if any)
+.cache/
+*.npz
+*.npy
