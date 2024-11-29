@@ -1,49 +1,92 @@
 import torch
-from transformers import AutoModelForAudioClassification, AutoFeatureExtractor
-from src.config import CFG
-from src.data_loader import create_dataloader
-import os
+from torch.optim.lr_scheduler import StepLR  # Import the scheduler
+from sklearn.metrics import f1_score
+from tqdm import tqdm  # For progress bar
+from torch.cuda.amp import autocast, GradScaler
 
-# Set paths
-BASE_PATH = "/app/birdclef-2024"
-csv_file = os.path.join(BASE_PATH, "filtered_data_with_labels.csv")
+def train(model, train_loader, test_loader, device, CFG, class_weights_tensor):
+    model = model.float()  # Ensure the model is in FP32 (no mixed precision)
+    optimizer = torch.optim.AdamW(model.parameters(), lr=CFG.lr)
+    criterion = torch.nn.CrossEntropyLoss(weight = class_weights_tensor)
 
-# Load the feature extractor and model
-extractor = AutoFeatureExtractor.from_pretrained(CFG.feature_extractor_name)
-model = AutoModelForAudioClassification.from_pretrained(CFG.model_name, num_labels=9)  # 9 is the number of classes, adjust accordingly
-model.to('cuda' if torch.cuda.is_available() else 'cpu')
+    scheduler = StepLR(optimizer, step_size=10, gamma=0.1)
 
-# Create DataLoaders
-train_loader = create_dataloader(csv_file=csv_file, base_path=BASE_PATH, batch_size=CFG.batch_size, extractor=extractor, test=False)
-val_loader = create_dataloader(csv_file=csv_file, base_path=BASE_PATH, batch_size=CFG.batch_size, extractor=extractor, test=True)
+    for epoch in range(CFG.num_epochs):
+        model.train()
+        running_loss = 0.0
+        for batch_idx, (inputs, labels) in enumerate(tqdm(train_loader, desc=f"Epoch {epoch+1}/{CFG.num_epochs}", unit="batch")):
+            inputs, labels = inputs.to(device).float(), labels.to(device).long()  # Ensure inputs are FP32
 
-# Optimizer and loss
-optimizer = torch.optim.Adam(model.parameters(), lr=CFG.lr)
-criterion = torch.nn.CrossEntropyLoss()
+            optimizer.zero_grad()
 
-# Training loop
-for epoch in range(CFG.num_epochs):
-    model.train()
-    total_loss = 0
-    for inputs, labels in train_loader:
-        inputs, labels = inputs.to('cuda'), labels.to('cuda')  # Move to GPU if available
-        optimizer.zero_grad()
-        outputs = model(inputs).logits
-        loss = criterion(outputs, labels)
-        loss.backward()
-        optimizer.step()
-        total_loss += loss.item()
-
-    print(f"Epoch {epoch+1}/{CFG.num_epochs}, Training Loss: {total_loss / len(train_loader)}")
-
-    # Validation phase
-    model.eval()  # Set model to evaluation mode
-    val_loss = 0
-    with torch.no_grad():
-        for inputs, labels in val_loader:
-            inputs, labels = inputs.to('cuda'), labels.to('cuda')
+            # Forward pass
             outputs = model(inputs).logits
             loss = criterion(outputs, labels)
-            val_loss += loss.item()
 
-    print(f"Epoch {epoch+1}/{CFG.num_epochs}, Validation Loss: {val_loss / len(val_loader)}")
+            loss.backward()
+
+            # Check for NaNs in gradients
+            for name, param in model.named_parameters():
+                if param.grad is not None and (torch.isnan(param.grad).any() or torch.isinf(param.grad).any()):
+                    print(f"NaN or inf detected in gradients of {name} at batch {batch_idx}!")
+
+            # Gradient clipping to prevent exploding gradients
+            torch.nn.utils.clip_grad_norm_(model.parameters(), max_norm=1.0)
+
+            optimizer.step()
+
+            running_loss += loss.item()
+
+        avg_train_loss = running_loss / len(train_loader)
+        print(f"Epoch {epoch + 1}/{CFG.num_epochs} - Training Loss: {avg_train_loss:.4f}")
+
+        # After each epoch, evaluate on the validation set and print validation metrics
+        val_loss, val_accuracy, val_f1_macro, val_f1_weighted = evaluate(model, test_loader, device, CFG)
+        
+        print(f"Epoch {epoch + 1}/{CFG.num_epochs}")
+        print(f"Validation Loss: {val_loss:.4f}")
+        print(f"Validation Accuracy: {val_accuracy:.4f}")
+        print(f"Validation Macro F1: {val_f1_macro:.4f}")
+        print(f"Validation Weighted F1: {val_f1_weighted:.4f}")
+
+        scheduler.step()
+
+
+def evaluate(model, test_loader, device, CFG):
+    model = model.float()  # Ensure the model is in FP32
+    model.eval()  # Set model to evaluation mode
+    total_loss = 0
+    total_correct = 0
+    total_samples = 0
+    total_f1_macro = 0
+    total_f1_weighted = 0
+
+    criterion = torch.nn.CrossEntropyLoss()
+
+    with torch.no_grad():
+        with tqdm(test_loader, desc="Evaluating", unit="batch") as pbar:
+            for inputs, labels in pbar:
+                inputs, labels = inputs.to(device).float(), labels.to(device).long()  # Ensure inputs are FP32
+                outputs = model(inputs).logits
+                loss = criterion(outputs, labels)
+                total_loss += loss.item()
+
+                _, predicted = torch.max(outputs, 1)
+                total_samples += labels.size(0)
+                total_correct += (predicted == labels).sum().item()
+
+                f1_macro = f1_score(labels.cpu(), predicted.cpu(), average='macro')
+                f1_weighted = f1_score(labels.cpu(), predicted.cpu(), average='weighted')
+                total_f1_macro += f1_macro
+                total_f1_weighted += f1_weighted
+
+                pbar.set_postfix(accuracy=total_correct / total_samples, 
+                                 f1_macro=total_f1_macro / (pbar.n + 1),
+                                 f1_weighted=total_f1_weighted / (pbar.n + 1))
+
+    accuracy = total_correct / total_samples
+    f1_macro_avg = total_f1_macro / len(test_loader)
+    f1_weighted_avg = total_f1_weighted / len(test_loader)
+    val_loss = total_loss / len(test_loader)
+
+    return val_loss, accuracy, f1_macro_avg, f1_weighted_avg

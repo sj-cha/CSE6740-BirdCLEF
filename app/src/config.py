@@ -1,7 +1,7 @@
 class CFG:
     # General
     seed = 42
-    batch_size = 64
+    batch_size = 4
     num_workers = 4  # For DataLoader parallelism
 
     # Audio Settings
@@ -14,5 +14,5 @@ class CFG:
     feature_extractor_name = model_name  # Feature extractor name (usually same as model)
 
     # Training
-    lr = 5e-5  # Learning rate
+    lr = 1e-6  # Learning rate
     num_epochs = 10

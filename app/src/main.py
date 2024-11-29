@@ -2,11 +2,13 @@ import os
 import torch
 import pandas as pd
 from sklearn.model_selection import train_test_split
-from sklearn.metrics import accuracy_score, f1_score
+from sklearn.utils.class_weight import compute_class_weight
 from transformers import AutoFeatureExtractor
 from src.config import CFG
 from src.data_loader import create_dataloader
 from src.model import load_model
+from train import train  # Importing train function from train.py
+
 
 def main():
     # Set paths
@@ -37,6 +39,9 @@ def main():
     df_train = master.loc[df_train.index].reset_index(drop=True)
     df_test = master.loc[df_test.index].reset_index(drop=True)
 
+    classes = df_train['primary_label'].unique()
+    class_weights = compute_class_weight(class_weight='balanced', classes=classes, y=df_train['primary_label'])
+    
     # Compute num_labels dynamically based on the unique values in 'primary_label'
     num_labels = len(df_train['primary_label'].unique())
     print(f"Number of unique labels: {num_labels}")
@@ -47,7 +52,7 @@ def main():
     model = load_model(CFG.model_name, num_labels=num_labels, device=device)
 
     # Move model to GPU and convert to float16
-    model = model.to(device).half()  # Convert model to float16
+    model = model.to(device)  # Convert model to float16
     print(f"Model is running on: {device}")
     
     # Check train and test sizes and unique labels
@@ -64,63 +69,13 @@ def main():
     print("Creating DataLoader for testing data...")
     test_loader = create_dataloader(csv_file=csv_file, base_path=BASE_PATH, batch_size=CFG.batch_size, extractor=extractor, shuffle=False, test=True)
 
-    # Set up optimizer and loss function
-    optimizer = torch.optim.Adam(model.parameters(), lr=CFG.lr)
-    criterion = torch.nn.CrossEntropyLoss()
 
-    # Training loop
-    print("Starting training...")
-    for epoch in range(CFG.num_epochs):
-        model.train()
-        total_loss = 0
-        for inputs, labels in train_loader:
-            inputs, labels = inputs.to(device).half(), labels.to(device)  # Cast inputs to float16
+    # Convert class weights to a tensor
+    class_weights_tensor = torch.tensor(class_weights, dtype=torch.float32).to(device) # Ensure it's on the correct device
+    
+    # Start training by calling train function from train.py
+    train(model, train_loader, test_loader, device, CFG, class_weights_tensor)
 
-            optimizer.zero_grad()
-
-            # Forward pass
-            outputs = model(inputs).logits
-            loss = criterion(outputs, labels.float())  # Convert loss labels to float32
-
-            loss.backward()
-            optimizer.step()
-            total_loss += loss.item()
-
-        print(f"Epoch {epoch + 1}/{CFG.num_epochs}, Loss: {total_loss / len(train_loader)}")
-
-    # Evaluate on the test set
-    print("Evaluating model on the test set...")
-    model.eval()  # Set model to evaluation mode
-    total_correct = 0
-    total_samples = 0
-    total_f1_macro = 0
-    total_f1_weighted = 0
-
-    with torch.no_grad():
-        for inputs, labels in test_loader:
-            inputs, labels = inputs.to(device).half(), labels.to(device)  # Cast inputs to float16
-            outputs = model(inputs).logits
-            _, predicted = torch.max(outputs, 1)
-            total_samples += labels.size(0)
-            total_correct += (predicted == labels).sum().item()
-
-            # Calculate F1 scores
-            f1_macro = f1_score(labels.cpu(), predicted.cpu(), average='macro')
-            f1_weighted = f1_score(labels.cpu(), predicted.cpu(), average='weighted')
-            total_f1_macro += f1_macro
-            total_f1_weighted += f1_weighted
-
-    accuracy = total_correct / total_samples
-    f1_macro_avg = total_f1_macro / len(test_loader)
-    f1_weighted_avg = total_f1_weighted / len(test_loader)
-
-    print(f"Test Accuracy: {accuracy:.4f}")
-    print(f"Test Macro F1: {f1_macro_avg:.4f}")
-    print(f"Test Weighted F1: {f1_weighted_avg:.4f}")
-
-    # Optionally, save the model
-    print("Saving the model...")
-    torch.save(model.state_dict(), 'birdclef_model.pth')
 
 if __name__ == "__main__":
     main()

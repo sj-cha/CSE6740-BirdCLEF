@@ -1,25 +1,45 @@
 import torch
 from transformers import AutoModelForAudioClassification
+from torch import nn
 
 def load_model(model_name, num_labels, device='cuda'):
-    # Sanity check: Print the number of labels
+    # Load the pre-trained model
     print(f"Loading model with num_labels = {num_labels}")
+    model = AutoModelForAudioClassification.from_pretrained(model_name)
     
-    # Load the model with the specified number of labels
-    model = AutoModelForAudioClassification.from_pretrained(model_name, torch_dtype=torch.float16)
-    
-    # Check and adjust the classifier head if needed
+    # Check the current classifier
     if hasattr(model, 'classifier'):
-        # For most models, the classifier will be a layer or head to adjust
         classifier = model.classifier
-        if isinstance(classifier, torch.nn.Linear):
-            if classifier.out_features != num_labels:
-                print(f"Adjusting classifier output from {classifier.out_features} to {num_labels}")
-                model.classifier = torch.nn.Linear(in_features=classifier.in_features, out_features=num_labels)
+        print("Original classifier structure:", classifier)
+        
+        # If the classifier is a simple linear layer, extract its in_features and replace it
+        if isinstance(classifier, nn.Module):  # It should be an nn.Module
+            in_features = classifier.dense.in_features
+            print(f"Classifier input features: {in_features}")
+            
+            # Replace classifier with a new one using FP32
+            model.classifier = nn.Sequential(
+                nn.LayerNorm(in_features),
+                nn.Linear(in_features, 512),
+                nn.ReLU(),
+                nn.Dropout(0.3),
+                nn.Linear(512, num_labels)
+            )
         else:
-            print("The classifier is not a simple linear layer. You might need a custom adjustment.")
+            print("The classifier is not a simple linear layer. Replacing with a custom classifier.")
+            # If classifier is not a simple layer, replace it entirely
+            model.classifier = nn.Sequential(
+                nn.LayerNorm(classifier.in_features),
+                nn.Linear(classifier.in_features, 512),
+                nn.ReLU(),
+                nn.Dropout(0.3),
+                nn.Linear(512, num_labels)
+            )
     else:
         print("Model does not have a 'classifier' attribute. You may need to manually modify the head.")
-    
+        # You can create a custom classifier if 'classifier' is not present
+
+    # Move model to the appropriate device
     model.to(device)
+    
     return model
