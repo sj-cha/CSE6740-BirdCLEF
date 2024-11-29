@@ -4,7 +4,7 @@ services:
     ports:
       - "8888:8888"
     volumes:
-      - ./tensorflow:/tf
+      - ./tf:/tf
     deploy:
       resources:
         reservations:
