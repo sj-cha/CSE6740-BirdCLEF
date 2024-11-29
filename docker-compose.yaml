@@ -1,15 +1,16 @@
 services:
-  jupyter-lab:
-    build: .
+  ast-audio-classifier:
+    image: ast-audio-classifier:jupyterlab
+    build:
+      context: .
     ports:
-      - "8888:8888"
+      - "8888:8888"  # Map JupyterLab to port 8888
     volumes:
-      - ./tf:/tf
-      - ./kaggle/input/birdclef-2024:/data
+      - ./app:/app  # Mount the entire app directory into the container
     deploy:
       resources:
         reservations:
           devices:
             - driver: nvidia
-              count: 1
-              capabilities: [gpu]
+              capabilities: [gpu]  # Enable GPU access
+    runtime: nvidia  # Use NVIDIA runtime for GPU
