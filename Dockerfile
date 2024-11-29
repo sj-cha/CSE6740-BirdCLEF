@@ -3,7 +3,7 @@ FROM tensorflow/tensorflow:2.16.2-gpu-jupyter
 
 WORKDIR /tf
 
-RUN pip install -U jupyterlab pandas matplotlib
+RUN pip install -U jupyterlab pandas matplotlib tensorflow_io soundfile librosa
 
 EXPOSE 8888
 

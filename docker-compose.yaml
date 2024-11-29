@@ -5,6 +5,7 @@ services:
       - "8888:8888"
     volumes:
       - ./tf:/tf
+      - ./kaggle/input/birdclef-2024:/data
     deploy:
       resources:
         reservations:
