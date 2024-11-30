@@ -15,4 +15,5 @@ class CFG:
 
     # Training
     lr = 1e-6  # Learning rate
-    num_epochs = 10
+    num_epochs = 30
+    model_save_dir = "./saved_models"

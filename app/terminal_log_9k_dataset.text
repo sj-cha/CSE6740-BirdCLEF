@@ -1,0 +1,302 @@
+root@961dc367b751:/app# python3 src/main.py
+Loading feature extractor...
+Loading filtered data...
+Splitting data into train and test sets...
+Loading master data...
+Number of unique labels: 89
+Loading model...
+Loading model with num_labels = 89
+Original classifier structure: ASTMLPHead(
+  (layernorm): LayerNorm((768,), eps=1e-12, elementwise_affine=True)
+  (dense): Linear(in_features=768, out_features=527, bias=True)
+)
+Classifier input features: 768
+Model is running on: cuda
+Train set size: 7448 samples
+Test set size: 1862 samples
+Unique labels in train set: 89
+Unique labels in test set: 89
+Creating DataLoader for training data...
+Creating DataLoader for testing data...
+Epoch 1/30: 100%|█████████████████████████████████████████████████████████████████████████████████████████| 481/481 [03:52<00:00,  2.07batch/s]
+Epoch 1/30 - Training Loss: 4.4724
+Evaluating: 100%|███████████████████████████████████| 121/121 [00:15<00:00,  7.72batch/s, accuracy=0.0229, f1_macro=0.0136, f1_weighted=0.0213]
+Epoch 1/30
+Validation Loss: 4.4554
+Validation Accuracy: 0.0229
+Validation Macro F1: 0.0136
+Validation Weighted F1: 0.0213
+New best model found at epoch 1. Saving model...
+Model saved to ./saved_models/best_model_epoch_1.pth
+Epoch 2/30: 100%|█████████████████████████████████████████████████████████████████████████████████████████| 481/481 [03:49<00:00,  2.10batch/s]
+Epoch 2/30 - Training Loss: 4.3679
+Evaluating: 100%|███████████████████████████████████| 121/121 [00:15<00:00,  7.74batch/s, accuracy=0.0437, f1_macro=0.0248, f1_weighted=0.0418]
+Epoch 2/30
+Validation Loss: 4.3977
+Validation Accuracy: 0.0437
+Validation Macro F1: 0.0248
+Validation Weighted F1: 0.0418
+New best model found at epoch 2. Saving model...
+Model saved to ./saved_models/best_model_epoch_2.pth
+Epoch 3/30: 100%|█████████████████████████████████████████████████████████████████████████████████████████| 481/481 [03:50<00:00,  2.09batch/s]
+Epoch 3/30 - Training Loss: 4.2549
+Evaluating: 100%|███████████████████████████████████| 121/121 [00:15<00:00,  7.72batch/s, accuracy=0.0832, f1_macro=0.0493, f1_weighted=0.0792]
+Epoch 3/30
+Validation Loss: 4.3397
+Validation Accuracy: 0.0832
+Validation Macro F1: 0.0493
+Validation Weighted F1: 0.0792
+New best model found at epoch 3. Saving model...
+Model saved to ./saved_models/best_model_epoch_3.pth
+Epoch 4/30: 100%|█████████████████████████████████████████████████████████████████████████████████████████| 481/481 [03:50<00:00,  2.08batch/s]
+Epoch 4/30 - Training Loss: 4.1439
+Evaluating: 100%|█████████████████████████████████████| 121/121 [00:15<00:00,  7.72batch/s, accuracy=0.125, f1_macro=0.0748, f1_weighted=0.118]
+Epoch 4/30
+Validation Loss: 4.2649
+Validation Accuracy: 0.1247
+Validation Macro F1: 0.0748
+Validation Weighted F1: 0.1181
+New best model found at epoch 4. Saving model...
+Model saved to ./saved_models/best_model_epoch_4.pth
+Epoch 5/30: 100%|█████████████████████████████████████████████████████████████████████████████████████████| 481/481 [03:50<00:00,  2.08batch/s]
+Epoch 5/30 - Training Loss: 4.0357
+Evaluating: 100%|██████████████████████████████████████| 121/121 [00:15<00:00,  7.72batch/s, accuracy=0.16, f1_macro=0.0964, f1_weighted=0.151]
+Epoch 5/30
+Validation Loss: 4.1936
+Validation Accuracy: 0.1601
+Validation Macro F1: 0.0964
+Validation Weighted F1: 0.1512
+New best model found at epoch 5. Saving model...
+Model saved to ./saved_models/best_model_epoch_5.pth
+Epoch 6/30: 100%|█████████████████████████████████████████████████████████████████████████████████████████| 481/481 [03:49<00:00,  2.10batch/s]
+Epoch 6/30 - Training Loss: 3.9356
+Evaluating: 100%|██████████████████████████████████████| 121/121 [00:15<00:00,  7.74batch/s, accuracy=0.193, f1_macro=0.124, f1_weighted=0.186]
+Epoch 6/30
+Validation Loss: 4.1293
+Validation Accuracy: 0.1933
+Validation Macro F1: 0.1243
+Validation Weighted F1: 0.1860
+New best model found at epoch 6. Saving model...
+Model saved to ./saved_models/best_model_epoch_6.pth
+Epoch 7/30: 100%|█████████████████████████████████████████████████████████████████████████████████████████| 481/481 [03:49<00:00,  2.09batch/s]
+Epoch 7/30 - Training Loss: 3.8140
+Evaluating: 100%|█████████████████████████████████████████| 121/121 [00:15<00:00,  7.79batch/s, accuracy=0.2, f1_macro=0.126, f1_weighted=0.19]
+Epoch 7/30
+Validation Loss: 4.0639
+Validation Accuracy: 0.1996
+Validation Macro F1: 0.1262
+Validation Weighted F1: 0.1901
+New best model found at epoch 7. Saving model...
+Model saved to ./saved_models/best_model_epoch_7.pth
+Epoch 8/30: 100%|█████████████████████████████████████████████████████████████████████████████████████████| 481/481 [03:47<00:00,  2.11batch/s]
+Epoch 8/30 - Training Loss: 3.7216
+Evaluating: 100%|███████████████████████████████████████| 121/121 [00:15<00:00,  7.80batch/s, accuracy=0.22, f1_macro=0.141, f1_weighted=0.211]
+Epoch 8/30
+Validation Loss: 3.9927
+Validation Accuracy: 0.2204
+Validation Macro F1: 0.1412
+Validation Weighted F1: 0.2107
+New best model found at epoch 8. Saving model...
+Model saved to ./saved_models/best_model_epoch_8.pth
+Epoch 9/30: 100%|█████████████████████████████████████████████████████████████████████████████████████████| 481/481 [03:46<00:00,  2.12batch/s]
+Epoch 9/30 - Training Loss: 3.5926
+Evaluating: 100%|██████████████████████████████████████| 121/121 [00:15<00:00,  7.78batch/s, accuracy=0.277, f1_macro=0.182, f1_weighted=0.269]
+Epoch 9/30
+Validation Loss: 3.9126
+Validation Accuracy: 0.2765
+Validation Macro F1: 0.1822
+Validation Weighted F1: 0.2693
+New best model found at epoch 9. Saving model...
+Model saved to ./saved_models/best_model_epoch_9.pth
+Epoch 10/30: 100%|████████████████████████████████████████████████████████████████████████████████████████| 481/481 [03:47<00:00,  2.11batch/s]
+Epoch 10/30 - Training Loss: 3.4967
+Evaluating: 100%|████████████████████████████████████████| 121/121 [00:15<00:00,  7.80batch/s, accuracy=0.27, f1_macro=0.179, f1_weighted=0.26]
+Epoch 10/30
+Validation Loss: 3.8434
+Validation Accuracy: 0.2703
+Validation Macro F1: 0.1795
+Validation Weighted F1: 0.2603
+New best model found at epoch 10. Saving model...
+Model saved to ./saved_models/best_model_epoch_10.pth
+Epoch 11/30: 100%|████████████████████████████████████████████████████████████████████████████████████████| 481/481 [03:47<00:00,  2.12batch/s]
+Epoch 11/30 - Training Loss: 3.4144
+Evaluating: 100%|██████████████████████████████████████| 121/121 [00:15<00:00,  7.69batch/s, accuracy=0.274, f1_macro=0.181, f1_weighted=0.265]
+Epoch 11/30
+Validation Loss: 3.8432
+Validation Accuracy: 0.2744
+Validation Macro F1: 0.1812
+Validation Weighted F1: 0.2652
+New best model found at epoch 11. Saving model...
+Model saved to ./saved_models/best_model_epoch_11.pth
+Epoch 12/30: 100%|████████████████████████████████████████████████████████████████████████████████████████| 481/481 [03:50<00:00,  2.09batch/s]
+Epoch 12/30 - Training Loss: 3.3947
+Evaluating: 100%|███████████████████████████████████████| 121/121 [00:15<00:00,  7.74batch/s, accuracy=0.289, f1_macro=0.197, f1_weighted=0.28]
+Epoch 12/30
+Validation Loss: 3.8371
+Validation Accuracy: 0.2890
+Validation Macro F1: 0.1966
+Validation Weighted F1: 0.2803
+New best model found at epoch 12. Saving model...
+Model saved to ./saved_models/best_model_epoch_12.pth
+Epoch 13/30: 100%|████████████████████████████████████████████████████████████████████████████████████████| 481/481 [03:49<00:00,  2.09batch/s]
+Epoch 13/30 - Training Loss: 3.3813
+Evaluating: 100%|█████████████████████████████████████████| 121/121 [00:15<00:00,  7.73batch/s, accuracy=0.295, f1_macro=0.2, f1_weighted=0.29]
+Epoch 13/30
+Validation Loss: 3.8280
+Validation Accuracy: 0.2952
+Validation Macro F1: 0.2003
+Validation Weighted F1: 0.2899
+New best model found at epoch 13. Saving model...
+Model saved to ./saved_models/best_model_epoch_13.pth
+Epoch 14/30: 100%|████████████████████████████████████████████████████████████████████████████████████████| 481/481 [03:49<00:00,  2.09batch/s]
+Epoch 14/30 - Training Loss: 3.3655
+Evaluating: 100%|██████████████████████████████████████| 121/121 [00:15<00:00,  7.74batch/s, accuracy=0.297, f1_macro=0.198, f1_weighted=0.289]
+Epoch 14/30
+Validation Loss: 3.8127
+Validation Accuracy: 0.2973
+Validation Macro F1: 0.1981
+Validation Weighted F1: 0.2893
+New best model found at epoch 14. Saving model...
+Model saved to ./saved_models/best_model_epoch_14.pth
+Epoch 15/30: 100%|████████████████████████████████████████████████████████████████████████████████████████| 481/481 [03:49<00:00,  2.10batch/s]
+Epoch 15/30 - Training Loss: 3.3562
+Evaluating: 100%|██████████████████████████████████████| 121/121 [00:15<00:00,  7.81batch/s, accuracy=0.304, f1_macro=0.205, f1_weighted=0.294]
+Epoch 15/30
+Validation Loss: 3.8051
+Validation Accuracy: 0.3035
+Validation Macro F1: 0.2047
+Validation Weighted F1: 0.2941
+New best model found at epoch 15. Saving model...
+Model saved to ./saved_models/best_model_epoch_15.pth
+Epoch 16/30: 100%|████████████████████████████████████████████████████████████████████████████████████████| 481/481 [03:46<00:00,  2.12batch/s]
+Epoch 16/30 - Training Loss: 3.3525
+Evaluating: 100%|█████████████████████████████████████████| 121/121 [00:15<00:00,  7.81batch/s, accuracy=0.297, f1_macro=0.2, f1_weighted=0.29]
+Epoch 16/30
+Validation Loss: 3.8150
+Validation Accuracy: 0.2973
+Validation Macro F1: 0.2003
+Validation Weighted F1: 0.2899
+Epoch 17/30: 100%|████████████████████████████████████████████████████████████████████████████████████████| 481/481 [03:47<00:00,  2.12batch/s]
+Epoch 17/30 - Training Loss: 3.3596
+Evaluating: 100%|██████████████████████████████████████| 121/121 [00:15<00:00,  7.80batch/s, accuracy=0.293, f1_macro=0.196, f1_weighted=0.284]
+Epoch 17/30
+Validation Loss: 3.8008
+Validation Accuracy: 0.2931
+Validation Macro F1: 0.1964
+Validation Weighted F1: 0.2837
+New best model found at epoch 17. Saving model...
+Model saved to ./saved_models/best_model_epoch_17.pth
+Epoch 18/30: 100%|████████████████████████████████████████████████████████████████████████████████████████| 481/481 [03:46<00:00,  2.12batch/s]
+Epoch 18/30 - Training Loss: 3.3363
+Evaluating: 100%|██████████████████████████████████████| 121/121 [00:15<00:00,  7.81batch/s, accuracy=0.304, f1_macro=0.202, f1_weighted=0.294]
+Epoch 18/30
+Validation Loss: 3.7877
+Validation Accuracy: 0.3035
+Validation Macro F1: 0.2021
+Validation Weighted F1: 0.2941
+New best model found at epoch 18. Saving model...
+Model saved to ./saved_models/best_model_epoch_18.pth
+Epoch 19/30: 100%|████████████████████████████████████████████████████████████████████████████████████████| 481/481 [03:46<00:00,  2.12batch/s]
+Epoch 19/30 - Training Loss: 3.3112
+Evaluating: 100%|██████████████████████████████████████| 121/121 [00:15<00:00,  7.80batch/s, accuracy=0.299, f1_macro=0.201, f1_weighted=0.288]
+Epoch 19/30
+Validation Loss: 3.7908
+Validation Accuracy: 0.2994
+Validation Macro F1: 0.2014
+Validation Weighted F1: 0.2879
+Epoch 20/30: 100%|████████████████████████████████████████████████████████████████████████████████████████| 481/481 [03:46<00:00,  2.13batch/s]
+Epoch 20/30 - Training Loss: 3.3216
+Evaluating: 100%|██████████████████████████████████████| 121/121 [00:15<00:00,  7.80batch/s, accuracy=0.293, f1_macro=0.199, f1_weighted=0.287]
+Epoch 20/30
+Validation Loss: 3.7862
+Validation Accuracy: 0.2931
+Validation Macro F1: 0.1985
+Validation Weighted F1: 0.2865
+New best model found at epoch 20. Saving model...
+Model saved to ./saved_models/best_model_epoch_20.pth
+Epoch 21/30: 100%|████████████████████████████████████████████████████████████████████████████████████████| 481/481 [03:46<00:00,  2.12batch/s]
+Epoch 21/30 - Training Loss: 3.3008
+Evaluating: 100%|███████████████████████████████████████| 121/121 [00:15<00:00,  7.80batch/s, accuracy=0.32, f1_macro=0.221, f1_weighted=0.311]
+Epoch 21/30
+Validation Loss: 3.7831
+Validation Accuracy: 0.3202
+Validation Macro F1: 0.2206
+Validation Weighted F1: 0.3113
+New best model found at epoch 21. Saving model...
+Model saved to ./saved_models/best_model_epoch_21.pth
+Epoch 22/30: 100%|████████████████████████████████████████████████████████████████████████████████████████| 481/481 [03:45<00:00,  2.13batch/s]
+Epoch 22/30 - Training Loss: 3.2978
+Evaluating: 100%|████████████████████████████████████████| 121/121 [00:15<00:00,  7.82batch/s, accuracy=0.308, f1_macro=0.209, f1_weighted=0.3]
+Epoch 22/30
+Validation Loss: 3.7933
+Validation Accuracy: 0.3077
+Validation Macro F1: 0.2095
+Validation Weighted F1: 0.2996
+Epoch 23/30: 100%|████████████████████████████████████████████████████████████████████████████████████████| 481/481 [03:48<00:00,  2.10batch/s]
+Epoch 23/30 - Training Loss: 3.3090
+Evaluating: 100%|██████████████████████████████████████| 121/121 [00:15<00:00,  7.73batch/s, accuracy=0.297, f1_macro=0.203, f1_weighted=0.293]
+Epoch 23/30
+Validation Loss: 3.7789
+Validation Accuracy: 0.2973
+Validation Macro F1: 0.2028
+Validation Weighted F1: 0.2927
+New best model found at epoch 23. Saving model...
+Model saved to ./saved_models/best_model_epoch_23.pth
+Epoch 24/30: 100%|████████████████████████████████████████████████████████████████████████████████████████| 481/481 [03:49<00:00,  2.10batch/s]
+Epoch 24/30 - Training Loss: 3.2994
+Evaluating: 100%|███████████████████████████████████████| 121/121 [00:15<00:00,  7.72batch/s, accuracy=0.316, f1_macro=0.214, f1_weighted=0.31]
+Epoch 24/30
+Validation Loss: 3.7695
+Validation Accuracy: 0.3160
+Validation Macro F1: 0.2137
+Validation Weighted F1: 0.3099
+New best model found at epoch 24. Saving model...
+Model saved to ./saved_models/best_model_epoch_24.pth
+Epoch 25/30: 100%|████████████████████████████████████████████████████████████████████████████████████████| 481/481 [03:49<00:00,  2.09batch/s]
+Epoch 25/30 - Training Loss: 3.3078
+Evaluating: 100%|██████████████████████████████████████| 121/121 [00:15<00:00,  7.73batch/s, accuracy=0.291, f1_macro=0.193, f1_weighted=0.284]
+Epoch 25/30
+Validation Loss: 3.7817
+Validation Accuracy: 0.2911
+Validation Macro F1: 0.1930
+Validation Weighted F1: 0.2837
+Epoch 26/30: 100%|████████████████████████████████████████████████████████████████████████████████████████| 481/481 [03:49<00:00,  2.10batch/s]
+Epoch 26/30 - Training Loss: 3.2938
+Evaluating: 100%|██████████████████████████████████████| 121/121 [00:15<00:00,  7.73batch/s, accuracy=0.306, f1_macro=0.204, f1_weighted=0.298]
+Epoch 26/30
+Validation Loss: 3.7743
+Validation Accuracy: 0.3056
+Validation Macro F1: 0.2044
+Validation Weighted F1: 0.2982
+Epoch 27/30: 100%|████████████████████████████████████████████████████████████████████████████████████████| 481/481 [03:48<00:00,  2.11batch/s]
+Epoch 27/30 - Training Loss: 3.3161
+Evaluating: 100%|██████████████████████████████████████| 121/121 [00:15<00:00,  7.73batch/s, accuracy=0.304, f1_macro=0.204, f1_weighted=0.295]
+Epoch 27/30
+Validation Loss: 3.7772
+Validation Accuracy: 0.3035
+Validation Macro F1: 0.2044
+Validation Weighted F1: 0.2955
+Epoch 28/30: 100%|████████████████████████████████████████████████████████████████████████████████████████| 481/481 [03:48<00:00,  2.10batch/s]
+Epoch 28/30 - Training Loss: 3.3064
+Evaluating: 100%|██████████████████████████████████████| 121/121 [00:15<00:00,  7.73batch/s, accuracy=0.295, f1_macro=0.197, f1_weighted=0.285]
+Epoch 28/30
+Validation Loss: 3.7816
+Validation Accuracy: 0.2952
+Validation Macro F1: 0.1971
+Validation Weighted F1: 0.2851
+Epoch 29/30: 100%|████████████████████████████████████████████████████████████████████████████████████████| 481/481 [03:48<00:00,  2.10batch/s]
+Epoch 29/30 - Training Loss: 3.3001
+Evaluating: 100%|██████████████████████████████████████| 121/121 [00:15<00:00,  7.80batch/s, accuracy=0.306, f1_macro=0.205, f1_weighted=0.298]
+Epoch 29/30
+Validation Loss: 3.7707
+Validation Accuracy: 0.3056
+Validation Macro F1: 0.2055
+Validation Weighted F1: 0.2982
+Epoch 30/30: 100%|████████████████████████████████████████████████████████████████████████████████████████| 481/481 [03:46<00:00,  2.12batch/s]
+Epoch 30/30 - Training Loss: 3.3018
+Evaluating: 100%|██████████████████████████████████████| 121/121 [00:15<00:00,  7.80batch/s, accuracy=0.301, f1_macro=0.201, f1_weighted=0.293]
+Epoch 30/30
+Validation Loss: 3.7765
+Validation Accuracy: 0.3015
+Validation Macro F1: 0.2007
+Validation Weighted F1: 0.2934
